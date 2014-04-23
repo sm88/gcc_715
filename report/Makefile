@@ -8,4 +8,4 @@ main.pdf:$(FILES)
 
 .PHONY: clean
 clean:
-	rm *.aux *.log *.backup *.blg *.toc *~ *.*~ 2>/dev/null
+	rm *.aux *.log *.backup *.blg *.toc *~ *.*~ main.pdf main.dvi 2>/dev/null
