@@ -1,6 +1,4 @@
-TGT=strl-scanner.cc srtl-parser.tab.hh
-
-all:srtl-parser.tab.cc srtl-parser.tab.hh srtl-scanner.cc Makefile2
+all:srtl-parser.tab.cc srtl-parser.tab.hh srtl-scanner.cc Makefile2 report
 	make -f Makefile2
 
 Makefile2:specviz.pro
@@ -16,6 +14,9 @@ srtl-parser.tab.hh : srtl-parser.tab.cc
 
 srtl-parser.tab.cc : srtl-parser.yy
 	bison --report=state -b srtl-parser -dv srtl-parser.yy
+
+.PHONY: report
+	make -C report
 
 .PHONY : clean
 clean: 
