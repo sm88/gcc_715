@@ -1,0 +1,233 @@
+{:
+;; GCC machine description for IA-32 and x86-64.
+;; Copyright (C) 1988, 1994, 1995, 1996, 1997, 1998, 1999, 2000,
+;; 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012
+;; Free Software Foundation, Inc.
+;; Mostly by William Schelter.
+;; x86_64 support added by Jan Hubicka
+;;
+;; This file is part of GCC.
+;;
+;; GCC is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; GCC is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GCC; see the file COPYING3.  If not see
+;; <http://www.gnu.org/licenses/>.  */
+;;
+;; The original PO technology requires these to be ordered by speed,
+;; so that assigner will pick the fastest.
+;;
+;; See file "rtl.def" for documentation on define_insn, match_*, et. al.
+;;
+;; The special asm out single letter directives following a '%' are:
+;; L,W,B,Q,S,T -- print the opcode suffix for specified size of operand.
+;; C -- print opcode suffix for set/cmov insn.
+;; c -- like C, but print reversed condition
+;; F,f -- likewise, but for floating-point.
+;; O -- if HAVE_AS_IX86_CMOV_SUN_SYNTAX, expand to "w.", "l." or "q.",
+;;      otherwise nothing
+;; R -- print the prefix for register names.
+;; z -- print the opcode suffix for the size of the current operand.
+;; Z -- likewise, with special suffixes for x87 instructions.
+;; * -- print a star (in certain assembler syntax)
+;; A -- print an absolute memory reference.
+;; E -- print address with DImode register names if TARGET_64BIT.
+;; w -- print the operand as if it's a "word" (HImode) even if it isn't.
+;; s -- print a shift double count, followed by the assemblers argument
+;;	delimiter.
+;; b -- print the QImode name of the register for the indicated operand.
+;;	%b0 would print %al if operands[0] is reg 0.
+;; w --  likewise, print the HImode name of the register.
+;; k --  likewise, print the SImode name of the register.
+;; q --  likewise, print the DImode name of the register.
+;; x --  likewise, print the V4SFmode name of the register.
+;; t --  likewise, print the V8SFmode name of the register.
+;; h -- print the QImode name for a "high" register, either ah, bh, ch or dh.
+;; y -- print "st(0)" instead of "st" as a register.
+;; d -- print duplicated register operand for AVX instruction.
+;; D -- print condition for SSE cmp instruction.
+;; P -- if PIC, print an @PLT suffix.
+;; p -- print raw symbol name.
+;; X -- don't print any sort of PIC '@' suffix for a symbol.
+;; & -- print some in-use local-dynamic symbol name.
+;; H -- print a memory address offset by 8; used for sse high-parts
+;; Y -- print condition for XOP pcom* instruction.
+;; + -- print a branch hint as 'cs' or 'ds' prefix
+;; ; -- print a semicolon (after prefixes due to bug in older gas).
+;; @ -- print a segment register of thread base pointer load
+:}
+
+list  "unspec".c_enum [
+  UNSPEC_GOT
+  ,UNSPEC_GOTOFF
+  ,UNSPEC_GOTPCREL
+  ,UNSPEC_GOTTPOFF
+  ,UNSPEC_TPOFF
+  ,UNSPEC_NTPOFF
+  ,UNSPEC_DTPOFF
+  ,UNSPEC_GOTNTPOFF
+  ,UNSPEC_INDNTPOFF
+  ,UNSPEC_PLTOFF
+  ,UNSPEC_MACHOPIC_OFFSET
+  ,UNSPEC_PCREL
+  ,UNSPEC_STACK_ALLOC
+  ,UNSPEC_SET_GOT
+  ,UNSPEC_SET_RIP
+  ,UNSPEC_SET_GOT_OFFSET
+  ,UNSPEC_MEMORY_BLOCKAGE
+  ,UNSPEC_STACK_CHECK
+  ,UNSPEC_TP
+  ,UNSPEC_TLS_GD
+  ,UNSPEC_TLS_LD_BASE
+  ,UNSPEC_TLSDESC
+  ,UNSPEC_TLS_IE_SUN
+  ,UNSPEC_SCAS
+  ,UNSPEC_FNSTSW
+  ,UNSPEC_SAHF
+  ,UNSPEC_PARITY
+  ,UNSPEC_FSTCW
+  ,UNSPEC_ADD_CARRY
+  ,UNSPEC_FLDCW
+  ,UNSPEC_REP
+  ,UNSPEC_LD_MPIC	
+  ,UNSPEC_TRUNC_NOOP
+  ,UNSPEC_DIV_ALREADY_SPLIT
+  ,UNSPEC_MS_TO_SYSV_CALL
+  ,UNSPEC_CALL_NEEDS_VZEROUPPER
+  ,UNSPEC_PAUSE
+  ,UNSPEC_LEA_ADDR
+  ,UNSPEC_FIX_NOTRUNC
+  ,UNSPEC_MASKMOV
+  ,UNSPEC_MOVMSK
+  ,UNSPEC_RCP
+  ,UNSPEC_RSQRT
+  ,UNSPEC_PSADBW
+  ,UNSPEC_COPYSIGN
+  ,UNSPEC_IEEE_MIN	
+  ,UNSPEC_IEEE_MAX	
+  ,UNSPEC_SIN
+  ,UNSPEC_COS
+  ,UNSPEC_FPATAN
+  ,UNSPEC_FYL2X
+  ,UNSPEC_FYL2XP1
+  ,UNSPEC_FRNDINT
+  ,UNSPEC_FIST
+  ,UNSPEC_F2XM1
+  ,UNSPEC_TAN
+  ,UNSPEC_FXAM
+  ,UNSPEC_FRNDINT_FLOOR
+  ,UNSPEC_FRNDINT_CEIL
+  ,UNSPEC_FRNDINT_TRUNC
+  ,UNSPEC_FRNDINT_MASK_PM
+  ,UNSPEC_FIST_FLOOR
+  ,UNSPEC_FIST_CEIL
+  ,UNSPEC_SINCOS_COS
+  ,UNSPEC_SINCOS_SIN
+  ,UNSPEC_XTRACT_FRACT
+  ,UNSPEC_XTRACT_EXP
+  ,UNSPEC_FSCALE_FRACT
+  ,UNSPEC_FSCALE_EXP
+  ,UNSPEC_FPREM_F
+  ,UNSPEC_FPREM_U
+  ,UNSPEC_FPREM1_F
+  ,UNSPEC_FPREM1_U
+  ,UNSPEC_C2_FLAG
+  ,UNSPEC_FXAM_MEM
+  ,UNSPEC_SP_SET
+  ,UNSPEC_SP_TEST
+  ,UNSPEC_SP_TLS_SET
+  ,UNSPEC_SP_TLS_TEST
+  ,UNSPEC_ROUND
+  ,UNSPEC_CRC32
+  ,UNSPEC_BEXTR
+  ,UNSPEC_PDEP
+  ,UNSPEC_PEXT
+]
+
+list "unspecv".c_enum [
+  UNSPECV_BLOCKAGE
+  ,UNSPECV_STACK_PROBE
+  ,UNSPECV_PROBE_STACK_RANGE
+  ,UNSPECV_ALIGN
+  ,UNSPECV_PROLOGUE_USE
+  ,UNSPECV_SPLIT_STACK_RETURN
+  ,UNSPECV_CLD
+  ,UNSPECV_NOPS
+  ,UNSPECV_RDTSC
+  ,UNSPECV_RDTSCP
+  ,UNSPECV_RDPMC
+  ,UNSPECV_LLWP_INTRINSIC
+  ,UNSPECV_SLWP_INTRINSIC
+  ,UNSPECV_LWPVAL_INTRINSIC
+  ,UNSPECV_LWPINS_INTRINSIC
+  ,UNSPECV_RDFSBASE
+  ,UNSPECV_RDGSBASE
+  ,UNSPECV_WRFSBASE
+  ,UNSPECV_WRGSBASE
+  ,UNSPECV_RDRAND
+]
+
+
+{:
+;; Constants to represent rounding modes in the ROUND instruction
+:}
+list noname.constants
+  [(ROUND_FLOOR,0x1),(ROUND_CEIL,0x2),
+   (ROUND_TRUNC,0x3),(ROUND_MXCSR,0x4),
+   (ROUND_NO_EXC,0x8)]
+
+{:
+;; Constants to represent pcomtrue/pcomfalse variants 
+:}
+
+{:
+;; Insns whose names begin with "x86_" are emitted by gen_FOO calls
+;; from i386.c.
+
+;; In C guard expressions, put expressions which may be compile-time
+;; constants first.  This allows for better optimization.  For
+;; example, write "TARGET_64BIT && reload_completed", not
+;; "reload_completed && TARGET_64BIT".
+
+;; Processor type.
+:}
+concrete cpu.attr instantiates const
+{
+    root (symbol_ref:"ix86_schedule");
+    lov:="none,pentium,pentiumpro,geode,k6,athlon,k8,core2,corei7,
+		    atom,generic64,amdfam10,bdver1,bdver2,btver1";
+}
+{:
+;; A basic instruction type.  Refinements due to arguments to be
+;; provided in other attributes.
+:}
+concrete type.attr instantiates sequence 
+{
+    root (const_string:"other");
+    lov:="other,multi,
+   alu,alu1,negnot,imov,imovx,lea,
+   incdec,ishift,ishiftx,ishift1,rotate,rotatex,rotate1,imul,imulx,idiv,
+   icmp,test,ibr,setcc,icmov,
+   push,pop,call,callv,leave,
+   str,bitmanip,
+   fmov,fop,fsgn,fmul,fdiv,fpspc,fcmov,fcmp,fxch,fistp,fisttp,frndint,
+   sselog,sselog1,sseiadd,sseiadd1,sseishft,sseishft1,sseimul,
+   sse,ssemov,sseadd,ssemul,ssecmp,ssecomi,ssecvt,ssecvt1,sseicvt,ssediv,sseins,
+   ssemuladd,sse4arg,lwp, mmx,mmxmov,mmxadd,mmxmul,mmxcmp,mmxcvt,mmxshft";
+}
+{:
+;; Main data type used by the insn
+:}
+concrete mode.attr instantiates sequence
+{
+    root (const_string:"unknown");
+    lov:="unknown,none,QI,HI,SI,DI,TI,OI,SF,DF,XF,TF,V8SF,V4DF,V4SF,V2DF,V2SF,V1DF";
+}

@@ -1,0 +1,5 @@
+To compile and make do:
+make clean
+make
+
+The output file specviz would be generated.

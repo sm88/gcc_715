@@ -1,0 +1,5 @@
+abstract dummy extends sequence
+{
+	root.1:=plus;
+	root.2:=minus;
+}
