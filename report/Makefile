@@ -5,6 +5,9 @@ all:main.pdf
 
 main.pdf:$(FILES)
 	pdflatex main
+	bibtex main
+	pdflatex main
+	pdflatex main
 
 .PHONY: clean
 clean:
