@@ -19,4 +19,4 @@ srtl-parser.tab.cc : srtl-parser.yy
 
 .PHONY : clean
 clean: 
-	rm srtl-parser.tab.cc srtl-parser.tab.hh srtl-scanner.cc *.o *.*~ *.pro Makefile2 gccproj_test
+	rm srtl-parser.tab.cc srtl-parser.tab.hh srtl-scanner.cc *.o *.*~ *.pro Makefile2 gccproj_test specviz *~
