@@ -1,0 +1,7 @@
+\section{Implementation Description}
+\label{impl}
+This section provides information on problems faced, the UI, and details of code.
+\input{problems}
+\input{class}
+\input{ui}
+\input{operation}

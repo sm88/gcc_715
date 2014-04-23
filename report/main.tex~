@@ -1,0 +1,21 @@
+\documentclass[12pt]{article}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{caption}
+\begin{document}
+\include{title}
+\include{abstract}
+\tableofcontents
+\include{intro}
+\include{software}
+\include{implementation}
+\include{future}
+\bibliographystyle{amsplain}
+\bibliography{main}
+\vspace{2cm}
+\begin{center}
+ \textbf{Created with \LaTeX}
+\end{center}
+\end{document}

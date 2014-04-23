@@ -1,0 +1,42 @@
+\begin{titlepage}
+\begin{center}
+
+% Upper part of the page. The '~' is needed because \\
+% only works if a paragraph has started.
+\textsc{\LARGE IIT Bombay}\\[1cm]
+
+\textsc{\Large Design and implementation of GNU Cross Compilation Framework Course Project}\\[0.5cm]
+\vspace{1cm}
+\includegraphics[scale=0.5]{logo}
+\vspace{1cm}
+
+% Title
+\hrule
+\vspace{0.2cm}
+\huge{QT based plugin for showing specRTL trees pictorially cum manual}
+\vspace{0.2cm}
+\hrule
+\vspace{0.5cm}
+
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Bharath RadhaKrishnan, 133050014 \\
+Sushant Mahajan, 133059007
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+Prof. Uday Khedker
+\end{flushright}
+\end{minipage}
+
+\vfill
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+\end{titlepage}

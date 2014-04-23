@@ -1,0 +1,58 @@
+\subsection{General Operation}
+The lifecycle of a new pattern on screen/backend is as follows:
+\begin{enumerate}
+ \item {The user opens the UI and does either of the following:
+ \begin{itemize}
+  \item Clicks the \emph{New} radio button. 
+  \begin{enumerate}
+   \item The textarea will become writable.
+   \item The user can input his specRTL description in it.
+  \end{enumerate}
+ \end{itemize}	%end of new button
+ 
+ \begin{itemize}
+  \item Clicks the \emph{Browse} radio button.
+  \begin{enumerate}
+   \item The \emph{Browse File} push button becomes activated.
+   \item The user can click it and browse for a specRTL file in the filesystem.
+  \end{enumerate}
+ \end{itemize}	%end of browse button
+ }
+ \item {The user clicks the \emph{Parse File} push button. As a result following actions are taken at the backend:
+ \begin{itemize}
+  \item The main UI class \emph{ui::MainWindow} invokes the \emph{util::ThreadedParser} class in a thread and waits for it the parse the file.
+  \item The \emph{util::ThreadedParser} class calls the \emph{util::getDriver(int, char**)} funtion to pass the file name to the backend parser.
+  \item The operation of the parser is not in the scope of this project. It is enough to know that the parser parses the textarea text and generated information in form of objects linked as in a tree and vectors containing additional information. The function returns a pointer to the \emph{srtl\_driver} clas.
+  \item Then the \emph{util::ThreadedParser} class calls the \emph{getSymTab()} function on the returned object and it returns a map\cite{7} of all patterns written in the file.
+  \item The operands in the pattern are also fetched by the \emph{util::ThreadedParser}.
+  \item All this information is then set into public static data structures, exposed by the class \emph{util::NodeMap}.
+  \item The map is then iterated over and from each pattern its tree is fetched via \emph{getTree()}, a function which we added.
+  \item The \emph{util::NodeMap} class massages the tree and operands to generate another tree (each node is wrapped in a \emph{BNode}) which can be displayed on the screen.
+  \item \emph{util::NodeMap} first creates a map of vectors for each pattern. The \emph{util::NodeMap::createNodeMap(...)} does this task. The keys of the map are the levels of the tree. In each level we have nodes which are to be displayed at the same level.
+  \item Then function calls a \emph{util::NodeMap::doDepthFirstSearch(...)} on the tree to affix correct operands with each node.
+  \item This map is then added to a vector of maps. This vector of maps is also publically exposed as \emph{util::NodeMap::m\_mapVec}.
+  \item The \emph{ui::MainWindow} resumes on completion of these steps and traverses the \emph{util::NodeMap::m\_mapVec} to populate the list of patterns.
+ \end{itemize}  
+ }
+  \item When the user click on a particular pattern in the list, the code using the start line number of the pattern (added in the parser stage), searches the pattern name in the textarea and starts highlighting till the beginning of the next pattern.
+  \item The tree map for the selected pattern is then iterated over and the information used to draw ellipses and rectangles representing nodes and attributes respectively.
+  \item On selecting a new pattern the appropriate map is indexed in the \emph{util::NodeMap::m\_mapVec} and tree is redrawn.
+\end{enumerate}
+
+\subsection{Expand and Collapse}
+\par{This use case means that the user should be able to click (of some other action) on a node in the rendered tree and the branch of the tree rooted at the clicked node should collapse or expand appropriately.} \\
+\noindent{The following allowed us to achieve it:}
+\begin{itemize}
+ \item We added two \emph{boolean}s to the \emph{BNode} class. These were:
+  \begin{enumerate}
+   \item \textbf{m_isCollapsed} - to maintain the state whether that node should be visible.
+   \item \textbf{m_isDoubleClicked}  - to remember which node was clicked by the user as that node in contrast to its children in the rendered tree needs to be shown as well as highlighted in some way, so the user can know where he clicked.}   
+  \end{enumerate}
+ \item When the user double clicks a node, the event is propagated to the \emph{MyGraphicsScene::mouseDoubleClickEvent(QEvent*)}. From there we can grab the co-ordinates of the click.
+ \item We also store the exacted screen co-ordinates of the items we draw on the screen.
+ \item After the double click, the method \emph{MainWindow::performMutation(QPointF)} is called which 
+
+\end{itemize}
+
+
+

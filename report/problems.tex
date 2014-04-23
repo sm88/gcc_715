@@ -1,0 +1,33 @@
+\subsection{Problems Faced}
+\begin{itemize}
+\item{\textbf{Parser not invoking from within GUI}
+    \par{Initially we tried invoking the parser from the main function without creating the UI process and it worked fine(for a single invocation). Since we require that the parser be called on the event when the user has selected a specRTL source file (of whose tree we are required to show), we found that the parser caused a segmentation fault and the program terminated.} \\
+    \noindent{It was happening for both large and small specRTL files so we concluded that it was not the source file that was the problem but the way the parser was being invoked as it was working for a single file, when invoked from main without GUI.} \\
+    \noindent{Search on Google did not help and we resorted to hit and trial. We still do not know the exact cause of the parser failing but we thought the since parser worked from outside the GUI environment, maybe on executing it as a separate process or thread we would be able to get it to work. We ran the parser on a thread (\emph{QThread} to be precise), and it started working, though for a single invocation only.}
+}
+\item{\textbf{Parser not working multiple times, in a single run}
+    \par{We are required to parse a specRTL file and generate the tree. The user can select a new file at any time in a run of the program and we have to parse again and display the new tree. But the parser was running only once and on selecting a new file, it was causing a segmentation fault. This was happening for main also. We are invoking the parse method using the same parser object (\emph{srtl\_driver* driver}) from within UI.} \\
+    \noindent{This time searching on Google for an answer was fruitful as we came across an old mailing list in which a user was facing a similar sort of an issue\cite{8}. The issue was that on the second run, the \emph{srtl\_scanner.cc} was having trouble de-referencing a yylex built-in MACRO. The scanner was not reinitializing so it could not accept a new file as input.} \\
+    \noindent{In order to release the memory after \emph{lexing} of the first file was complete we added a call to \emph{yylex\_destroy()}\cite{2}, which does precisely the same thing, i.e. releases memory. We added this call to the \emph{scan\_end()} function. After this we were able to achieve multiple runs of the parser.}
+}
+\item{\textbf{Highlighting the selected pattern}
+    \par{Highlighting the displayed pattern in the UI implies knowing the line number where it starts. In its original state, the parser does not report the line number in the line file where pattern is written.} \\
+    \noindent{This information is available with the parser. Without knowing line numbers it is very inefficient to do a search every time and find the pattern name in the file, and highlight it.}\\
+    \noindent{We modified the parser code (yy file) to set the line number identified when parsing, in the \emph{current\_pattern} member of the \emph{srtl\_driver} class object. This object was already being used in the parser. This also involved adding an accessor and mutator to the \emph{concrete-pattern} class.}\\
+    \noindent{Later we extracted this information and stored it in the object of the class that represents the UI node corresponding to the node constructed by the parser and made the search efficient.}
+}
+\item{\textbf{Incorrect line numbers reported by parser}
+  \par{One of the use cases of this tool were to highlight the text in the source file (visible in the tool), of which the tree is shown (a pattern can be selected from a handy list provided in the UI). In order to achieve this efficiently, we need the line number at which the pattern description starts and highlight it. The line number actually being reported was arbitrarily incorrect. Had it been always ahead or always before, we could have done a search from that point onwards to find the pattern name (which we can get from the list) and perform the highlight.}\\
+  \noindent{The lex code for the parser revealed that in case there were many newlines present in the code, the \emph{yy\_lineno} was being incremented only once. Fixing this, gave us a value of the line number that was always a few lines before the correct value.} \\
+  \noindent{Combining this with a string search, gave us the correct pattern location, in an efficient manner.}
+}
+\item{\textbf{Parser does not provide information on abstract patterns by themselves.}
+  \par{Initially, we were displaying only the \emph{concrete\_pattern}s. On detection of a standalone \emph{abstract} pattern, the parser was just ignoring. It only considers the abstract patterns when they are used by other \emph{concrete\_pattern}s.}
+  \noindent{We made changes at two places, first it was the \emph{yy} file, to add information to the \emph{currentPattern} pointer in case of abstract patterns, just like we did for \emph{concrete\_pattern}s, for getting the line numbers.}
+  \noindent{We also made changes to \emph{abstract.hh} and \emph{abstract.cc}. The \emph{virtual} function \emph{pattern::createPattern()} was overridden so that the parser can call it to fill the structure representing the \emph{abstract} pattern with appropriate information.}
+  \noindent{Because of our flexible back-end, we did not need any change in the structures holding pattern info \emph{util::NodeMap::m\_mapVec} and the abstract pattern were included.}
+}
+\item{\textbf{Miscellaneous}
+  \par{We also did some minor modifications like moving the driver code to an more manageable area and creating a pointer to the parser so the entry would be easier. Initially, the parser had its own main and could not be worked with.}
+}
+\end{itemize}

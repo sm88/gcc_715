@@ -1,0 +1,33 @@
+\section{Software Requirements}
+\label{softreq}
+\par{Following is the description of the environment in which we developed our application as well as minimum set of libraries which a user requires to run the software.}
+\subsection{Development Environment}
+\label{devel}
+\begin{itemize}
+ \item \textbf{OS:} Laptop running Ubuntu 12.04.4 LTS(64-bit), Precise Pangolin
+ \item \textbf{Editor/IDE:} QT creator (Qt 5.2.1 Open Source) \cite{4}
+ \item \textbf{Compiler:} gcc v4.6.3
+ \item \textbf{Make:} GNU Make 3.81
+ \item \textbf{QMake:} QMake version 3.0, provided with qtinstaller package
+ \item \textbf{Parser:} bison (GNU Bison) 2.7 \cite{1}
+ \item \textbf{Lexer:} flex 2.5.35 \cite{5}
+ \item \textbf{Other libraries: }
+ \begin{itemize}
+    \item libqt4-core
+    \item libqt4-gui
+    \item libqt4-dev
+ \end{itemize}  
+ \item \textbf{Coffee and Snacks: } Brewberries, Hostel-5 Xerox shop :) 
+\end{itemize}
+\subsection{Release Environment}
+\label{release}
+\begin{itemize}
+ \item \textbf{OS:} Any linux based OS, with Qt support, and Desktop Manager
+ \item \textbf{Libraries:} (These are specific to Ubuntu (Debian), refer your OS documentation) 
+ \begin{itemize}
+  \item libqt4-core
+  \item libqt4-gui
+  \item libqt4-dev
+  \item If you want to compile the project, you'll also need \emph{make, flex, bison, and gcc} as mentioned in subsection \ref{devel}.
+ \end{itemize}
+\end{itemize}

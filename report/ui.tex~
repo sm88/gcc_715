@@ -1,0 +1,27 @@
+\subsection{UI Description}
+The annotated UI is as follows: \\
+ \begin{minipage}{\linewidth}
+  \centering
+  \captionof{figure}{Main UI}
+  \includegraphics[scale=0.35]{mainui}
+ \end{minipage}
+ 
+ \vspace{0.2cm}
+ \hrule
+ \vspace{0.2cm}
+ 
+ \begin{minipage}{\linewidth}
+  \centering
+  \captionof{figure}{Rendered Tree}
+  \includegraphics[scale=0.4]{expand}
+ \end{minipage}
+ 
+ \vspace{0.2cm}
+ \hrule
+ \vspace{0.2cm}
+ 
+ \begin{minipage}{\linewidth}
+  \centering
+  \captionof{figure}{Collapsed Branch}
+  \includegraphics[scale=0.4]{collapse}
+ \end{minipage}

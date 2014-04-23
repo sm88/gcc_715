@@ -1,0 +1,5 @@
+\section{Introduction}
+\subsection{Problem Description}
+\par{specRTL is a language which provides a compositional specification mechanism for defining patterns that describe RTL templates in machine descriptions. The description of the language and its power is not in the scope of the project, but specific explainations will be provided wherever necessary. The specRTL language allows one to create patterns, both abstract and concrete (concrete patterns extend from abstract patterns). It is however, difficult to visualize the scale and shape of the pattern once it goes beyond a certain size.}
+\subsection{Solution}
+\par{The goal of the project is to provide a seamless interface where a user can provide the specRTL description and would be presented with the appropriate n-ary tree representing the pattern. This would be immensely helpful in creating new patterns and/or extending from existing ones. The tool is Linux based and created using C++ with the Qt library for designing the UI.}
