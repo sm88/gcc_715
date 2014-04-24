@@ -606,7 +606,7 @@ bool MainWindow::isItemAtScenePos(BNode* aNode, QPointF aPoint){
     int yEnd = aNode->getSY() + aNode->getHeight();
 
     if(aPoint.x() >= xStart && aPoint.x() <= xEnd){
-        if(aPoint.x() >= yStart && aPoint.y() <= yEnd)
+        if(aPoint.y() >= yStart && aPoint.y() <= yEnd)
             return true;
     }
 
